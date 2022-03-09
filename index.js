@@ -13,11 +13,9 @@ mongoose
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-function runAsyncWrapper(callback) {
-  return function (req, res, next) {
-    callback(req, res, next).catch(next);
-  };
-}
+const runAsyncWrapper = (callback) => (req, res, next) => {
+  return Promise.resolve(callback(req, res, next)).catch(next);
+};
 
 // app.get("/", (req, res) => {
 //   WilderModel.init().then(() => {
@@ -57,7 +55,7 @@ app.get("/", (req, res) => {
 });
 
 app.use((req, res, next) => {
-  res.status(404).send("Error 404 NOT FOUND, Sorry");
+  res.status(404).send("Sorry can't find that!");
 });
 
 app.listen(port, () => {

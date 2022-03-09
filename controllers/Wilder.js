@@ -1,15 +1,15 @@
 const WilderModel = require("../models/Wilder");
 
 module.exports = {
-  create: async (req, res, next) => {
+  create: async (req, res) => {
     const wilder = new WilderModel(req.body);
     const result = await wilder.save();
     res.json({ success: true, result });
   },
 
-  read: async (req, res, next) => {
+  read: async (req, res) => {
     const result = await WilderModel.find({});
-    res.status(200).json(result);
+    res.json({ success: true, result });
   },
 
   update: async (req, res, next) => {
@@ -20,9 +20,8 @@ module.exports = {
       );
       res.status(200).json(wilder);
     } catch (error) {
-      if (error.path === "_id") {
-        next();
-      } else res.status(500).send("Error retrieving wilder on database");
+      error.message = "error updating";
+      return next(error);
     }
   },
 
