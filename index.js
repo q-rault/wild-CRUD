@@ -45,17 +45,27 @@ app.post("/api/wilder/create", runAsyncWrapper(WilderController.create));
 
 app.get("/api/wilder/read", runAsyncWrapper(WilderController.read));
 
-app.put("/api/wilder/update/:id", WilderController.update);
+app.put("/api/wilder/update/:id", runAsyncWrapper(WilderController.update));
 // app.patch("/api/wilder/patch/:id", WilderController.patch);
 
-app.delete("/api/wilder/delete/:id", WilderController.delete);
+app.delete("/api/wilder/delete/:id", runAsyncWrapper(WilderController.delete));
 
 app.get("/", (req, res) => {
   res.send("Hello World test!");
 });
 
-app.use((req, res, next) => {
-  res.status(404).send("Sorry can't find that!");
+// app.use((req, res, next) => {
+//   res.status(404).send("Sorry can't find that!");
+// });
+
+app.use((error, req, res, next) => {
+  if (error.code === 11000) {
+    res.status(400);
+    res.json({ success: false, message: "The name is already used" });
+  } else {
+    res.status(400);
+    res.json("unknown error");
+  }
 });
 
 app.listen(port, () => {

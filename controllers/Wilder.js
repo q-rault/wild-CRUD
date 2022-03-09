@@ -13,29 +13,19 @@ module.exports = {
   },
 
   update: async (req, res, next) => {
-    try {
-      const wilder = await WilderModel.updateOne(
-        { _id: req.params.id },
-        { ...req.body }
-      );
-      res.status(200).json(wilder);
-    } catch (error) {
-      error.message = "error updating";
-      return next(error);
-    }
+    const result = await WilderModel.updateOne(
+      { _id: req.params.id },
+      { ...req.body }
+    );
+    res.json({ success: true, result });
   },
 
   delete: async (req, res, next) => {
-    try {
-      // const result = await WilderModel.deleteMany({});
-      const result = await WilderModel.deleteOne({ _id: req.params.id });
-      if (result.deletedCount === 0) {
-        return res.status(204).json("");
-      }
-      res.json(result);
-    } catch (error) {
-      error.message = "error deleting";
-      return next(error);
+    // const result = await WilderModel.deleteMany({});
+    const result = await WilderModel.deleteOne({ _id: req.params.id });
+    if (result.deletedCount === 0) {
+      return res.status(204).json("");
     }
+    res.json({ success: true, result });
   },
 };
