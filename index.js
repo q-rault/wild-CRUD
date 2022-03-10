@@ -2,8 +2,9 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const WilderController = require("./controllers/Wilder");
+const cors = require("cors");
 
-const port = 3000;
+const port = 3001;
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/wilderdb", { autoIndex: true })
@@ -12,6 +13,7 @@ mongoose
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 
 const runAsyncWrapper = (callback) => (req, res, next) => {
   return Promise.resolve(callback(req, res, next)).catch(next);
