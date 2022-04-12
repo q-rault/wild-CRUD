@@ -14,8 +14,10 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
+    "@apollo/client": "^3.5.10",
     "cors": "^2.8.5",
     "express": "^4.17.3",
+    "graphql": "^16.3.0",
     "mongoose": "^6.2.4"
   }
 }
